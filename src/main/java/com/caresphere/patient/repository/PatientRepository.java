@@ -1,0 +1,24 @@
+package com.caresphere.patient.repository;
+
+import com.caresphere.patient.domain.Patient;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+public interface PatientRepository extends JpaRepository<Patient, Long> {
+
+    boolean existsByMrn(String mrn);
+
+    /**
+     * Case-insensitive search across name and MRN. When the query is blank all patients
+     * are returned (paginated).
+     */
+    @Query("""
+            SELECT p FROM Patient p
+            WHERE LOWER(p.firstName) LIKE LOWER(CONCAT('%', :q, '%'))
+               OR LOWER(p.lastName)  LIKE LOWER(CONCAT('%', :q, '%'))
+               OR LOWER(p.mrn)       LIKE LOWER(CONCAT('%', :q, '%'))
+            """)
+    Page<Patient> search(String q, Pageable pageable);
+}

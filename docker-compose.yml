@@ -1,0 +1,25 @@
+# Local development stack for CareSphere AI.
+# Starts PostgreSQL 16 with the pgvector extension preinstalled.
+#   docker compose up -d
+#   docker compose down            (stop)
+#   docker compose down -v         (stop + drop the data volume)
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: caresphere-postgres
+    environment:
+      POSTGRES_DB: caresphere
+      POSTGRES_USER: caresphere
+      POSTGRES_PASSWORD: caresphere
+    ports:
+      - "5432:5432"
+    volumes:
+      - caresphere-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U caresphere -d caresphere"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  caresphere-pgdata:

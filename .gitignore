@@ -1,0 +1,29 @@
+# Maven build output
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env / secrets — never commit credentials
+*.env
+.env
+.env.local
+application-*.yml
+
+# Logs
+*.log
+logs/
